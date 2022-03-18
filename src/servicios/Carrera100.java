@@ -21,6 +21,7 @@ public class Carrera100 {
 	static int numListos=0;
 	static int numeroAtletas = 4;
 	static List<String> listaAtletasResultado = null;
+	static int x = 0;
 	
 	@GET //tipo de petición HTTP
 	@Produces(MediaType.TEXT_PLAIN)
@@ -29,7 +30,7 @@ public class Carrera100 {
 	{
 		numPreparados=0;
 		numListos=0;
-		Contador.restart();
+		x = Contador.restart();
 		listaAtletasResultado = new ArrayList<String>();
 		
 		Atleta atleta[] = new Atleta[numeroAtletas];
@@ -47,34 +48,48 @@ public class Carrera100 {
 	@Path("preparados")
 	public int preparados() throws InterruptedException {
 		
-		Contador.increment();
-		s_preparados.acquire();
-		
+		x = Contador.increment();
+		if(Contador.value() != numeroAtletas) {
+			s_preparados.acquire();
+		} else {
+			s_preparados.release(numeroAtletas-1);
+			x = Contador.restart();
+			System.out.println("Preparados");
+		}
+
 		return 0;
 		
 	}
 	@Path("listos")
 	public int listos() throws InterruptedException {
-		Contador.increment();
-		s_listos.acquire();
+		
+		x = Contador.increment();
+		if(Contador.value() != numeroAtletas) {
+			s_listos.acquire();
+		} else {
+			s_preparados.release(numeroAtletas-1);
+			x = Contador.restart();
+			System.out.println("Listos");
+		}
 		return 0;
 		
 	}
-	//Hola
 	
+	
+	//@GET
+	//@Produces(MediaType.TEXT_PLAIN)
 	@Path("llegada")
-	@GET
-	@Produces(MediaType.TEXT_PLAIN)
-	public int llegada(@DefaultValue("none") @QueryParam(value="num") String num) {
+	public int llegada(@DefaultValue("none") @QueryParam(value = "item") final List<String> item) {
 		
-		listaAtletasResultado.add("El atleta con dorsal: " + num + "ha tardado: " + "");
+		listaAtletasResultado.add("El atleta con dorsal: " + item.get(0) + "ha tardado: " + item.get(1));
 		return 0;
 		
 	}
 	
-	@Path("resultados")
+	
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
+	@Path("resultados")
 	public String resultados(){
 		String resultado = "";
 		for(String s : listaAtletasResultado) {
