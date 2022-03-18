@@ -40,17 +40,8 @@ public class Carrera100 {
 		for(int i=0;i<numeroAtletas;i++) {
 			atleta[i].start();
 		}
-		//Cambiar ya que se queda pillado en el bucle///////////
-		while(Contador.value() != numeroAtletas) {}
-		System.out.println("Preparados!!!");
-		Contador.restart();
-		s_preparados.release(numeroAtletas);
-		while(Contador.value() != numeroAtletas) {}
-		System.out.println("Listos!!!");
-		s_preparados.release(numeroAtletas);
-		System.out.println("YA!!!");
-		////////////////////////////////////////////////////////
-		return "La carrera se ha reiniciado.";
+		
+		return "La carrera se ha iniciado.";
 	}
 	
 	@Path("preparados")
