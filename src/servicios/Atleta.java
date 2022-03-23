@@ -31,12 +31,14 @@ public class Atleta extends Thread {
 			System.out.println("Atleta Preparado");
 			target.path("Carrera100/listos");
 			System.out.println("Atleta Listo");
+			
 			//Duerme el tiempo aleatorio
 			try {
 				Thread.sleep((int)tiempo);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+			
 			ArrayList<String> lista = new ArrayList<String>();
 			lista.add(""+dorsal);
 			lista.add(""+tiempo/1000);

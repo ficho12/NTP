@@ -11,68 +11,75 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import java.lang.Thread;
 
 @Singleton
 @Path("Carrera100")//ruta a la clase
 public class Carrera100 {
 	private static Semaphore s_preparados = new Semaphore(0);
 	private static Semaphore s_listos = new Semaphore(0);
-	static int numPreparados=0;
-	static int numListos=0;
-	static int numeroAtletas = 4;
+	static int numeroAtletas = 4;		//Pasar por parámetro a reinicio
 	static List<String> listaAtletasResultado = null;
-	static int x = 0;
+	static List<Atleta> listaAtletas = null;
 	
 	@GET //tipo de petición HTTP
 	@Produces(MediaType.TEXT_PLAIN)
 	@Path("reinicio")
 	public String reinicio() throws Exception
 	{
-		numPreparados=0;
-		numListos=0;
-		x = Contador.restart();
+		Contador.restart();
 		listaAtletasResultado = new ArrayList<String>();
+		listaAtletas = new ArrayList<Atleta>();
 		
-		Atleta atleta[] = new Atleta[numeroAtletas];
-	
+		s_preparados.drainPermits();
+		s_listos.drainPermits();
+			
 		for(int i=0;i<numeroAtletas;i++) {
-			atleta[i] = new Atleta(i+1);
-		}
-		for(int i=0;i<numeroAtletas;i++) {
-			atleta[i].start();
+			listaAtletas.add(new Atleta(i));
+			listaAtletas.get(i).start();
 		}
 		
 		return "La carrera se ha iniciado.";
 	}
 	
 	@Path("preparados")
-	public int preparados() throws InterruptedException {
+	public int preparados() {
 		
-		x = Contador.increment();
+		Contador.increment();
 		if(Contador.value() != numeroAtletas) {
-			s_preparados.acquire();
+			try {
+				Thread.sleep(1000);
+				s_preparados.acquire();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		} else {
-			s_preparados.release(numeroAtletas-1);
-			x = Contador.restart();
+			Contador.restart();
+			s_preparados.release(numeroAtletas);
 			System.out.println("Preparados");
 		}
 
-		return 0;
-		
+		return 0;	
 	}
+	
 	@Path("listos")
-	public int listos() throws InterruptedException {
+	public int listos() {
 		
-		x = Contador.increment();
+		Contador.increment();
 		if(Contador.value() != numeroAtletas) {
-			s_listos.acquire();
+			try {
+				Thread.sleep(1000);
+				s_listos.acquire();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		} else {
-			s_preparados.release(numeroAtletas-1);
-			x = Contador.restart();
+			Contador.restart();
+			s_listos.release(numeroAtletas);
 			System.out.println("Listos");
 		}
-		return 0;
 		
+		return 0;
 	}
 	
 	
@@ -83,7 +90,6 @@ public class Carrera100 {
 		
 		listaAtletasResultado.add("El atleta con dorsal: " + item.get(0) + "ha tardado: " + item.get(1));
 		return 0;
-		
 	}
 	
 	
@@ -95,7 +101,7 @@ public class Carrera100 {
 		for(String s : listaAtletasResultado) {
 			resultado = resultado + s + "/n";
 		}
-		return resultado;
 		
+		return resultado;
 	}
 }
