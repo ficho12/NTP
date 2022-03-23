@@ -21,34 +21,34 @@ public class Carrera100 {
 	static int numeroAtletas = 4;		//Pasar por parámetro a reinicio
 	static List<String> listaAtletasResultado = null;
 	static List<Atleta> listaAtletas = null;
+	static float tiempoInicioCarrera;
 	
 	@GET //tipo de petición HTTP
 	@Produces(MediaType.TEXT_PLAIN)
 	@Path("reinicio")
 	public String reinicio() throws Exception
 	{
+		System.out.println("La Carrera se ha reiniciado");
 		Contador.restart();
 		listaAtletasResultado = new ArrayList<String>();
-		listaAtletas = new ArrayList<Atleta>();
+		
 		
 		s_preparados.drainPermits();	//Pone todos los permits a 0, da igual el número
 		s_listos.drainPermits();
 			
-		for(int i=0;i<numeroAtletas;i++) {
-			listaAtletas.add(new Atleta(i));
-			listaAtletas.get(i).start();
-		}
 		
-		return "La carrera se ha iniciado.";
+		
+		return "";
 	}
 	
+	@GET //tipo de petición HTTP
+	@Produces(MediaType.TEXT_PLAIN)
 	@Path("preparados")
-	public int preparados() {
+	public String preparados() {
 		
 		Contador.increment();
 		if(Contador.value() != numeroAtletas) {
 			try {
-				Thread.sleep(1000);
 				s_preparados.acquire();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -59,16 +59,17 @@ public class Carrera100 {
 			System.out.println("Preparados");
 		}
 
-		return 0;	
+		return "";	
 	}
 	
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
 	@Path("listos")
-	public int listos() {
+	public String listos() {
 		
 		Contador.increment();
 		if(Contador.value() != numeroAtletas) {
 			try {
-				Thread.sleep(1000);
 				s_listos.acquire();
 			} catch (InterruptedException e) {
 				e.printStackTrace();		//Si el main no imprime mensajes como podemos debugear sin debugear? XD
@@ -77,19 +78,20 @@ public class Carrera100 {
 			Contador.restart();
 			s_listos.release(numeroAtletas);
 			System.out.println("Listos");
+			tiempoInicioCarrera = System.currentTimeMillis();
 		}
 		
-		return 0;
+		return "";
 	}
 	
 	
-	//@GET
-	//@Produces(MediaType.TEXT_PLAIN)
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
 	@Path("llegada")
-	public int llegada(@DefaultValue("none") @QueryParam(value = "item") final List<String> item) {
+	public String llegada(@QueryParam(value = "item")int dorsal) {
 		
-		listaAtletasResultado.add("El atleta con dorsal: " + item.get(0) + "ha tardado: " + item.get(1));
-		return 0;
+		listaAtletasResultado.add("El atleta con dorsal: " + dorsal + " ha tardado: " + ((System.currentTimeMillis() - tiempoInicioCarrera)/1000) + " segundos");
+		return "";
 	}
 	
 	
@@ -97,11 +99,12 @@ public class Carrera100 {
 	@Produces(MediaType.TEXT_PLAIN)
 	@Path("resultados")
 	public String resultados(){
-		String resultado = "";
-		for(String s : listaAtletasResultado) {
-			resultado = resultado + s + "/n";
+		Contador.increment();
+		if(Contador.value() == numeroAtletas) {
+			for(String s : listaAtletasResultado) {
+				System.out.println(s);
+			}
 		}
-		
-		return resultado;
+		return "";
 	}
 }
