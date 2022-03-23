@@ -21,7 +21,7 @@ public class Atleta extends Thread {
 	Atleta(int dorsal){
 		
 		this.dorsal=dorsal;
-		this.tiempo = tarda()*1000;
+		this.tiempo = tarda();
 	}
 	
 	public void run() {
@@ -48,6 +48,6 @@ public class Atleta extends Thread {
 	}
 	
 	public float tarda() {
-		return (float) (9.56 + Math.random()*2);
+		return (float) (9.56 + Math.random()*2)*1000;
 	}
 }

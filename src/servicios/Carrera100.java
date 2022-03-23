@@ -16,8 +16,8 @@ import java.lang.Thread;
 @Singleton
 @Path("Carrera100")//ruta a la clase
 public class Carrera100 {
-	private static Semaphore s_preparados = new Semaphore(0);
-	private static Semaphore s_listos = new Semaphore(0);
+	public static Semaphore s_preparados = new Semaphore(0);
+	public static Semaphore s_listos = new Semaphore(0);
 	static int numeroAtletas = 4;		//Pasar por parámetro a reinicio
 	static List<String> listaAtletasResultado = null;
 	static List<Atleta> listaAtletas = null;
@@ -31,7 +31,7 @@ public class Carrera100 {
 		listaAtletasResultado = new ArrayList<String>();
 		listaAtletas = new ArrayList<Atleta>();
 		
-		s_preparados.drainPermits();
+		s_preparados.drainPermits();	//Pone todos los permits a 0, da igual el número
 		s_listos.drainPermits();
 			
 		for(int i=0;i<numeroAtletas;i++) {
@@ -71,8 +71,8 @@ public class Carrera100 {
 				Thread.sleep(1000);
 				s_listos.acquire();
 			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+				e.printStackTrace();		//Si el main no imprime mensajes como podemos debugear sin debugear? XD
+			}								// otra terminal (?)
 		} else {
 			Contador.restart();
 			s_listos.release(numeroAtletas);
