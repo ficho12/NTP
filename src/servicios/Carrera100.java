@@ -5,13 +5,11 @@ import java.util.List;
 import java.util.concurrent.Semaphore;
 
 import javax.inject.Singleton;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import java.lang.Thread;
 
 @Singleton
 @Path("Carrera100")//ruta a la clase
@@ -26,7 +24,7 @@ public class Carrera100 {
 	@GET //tipo de petición HTTP
 	@Produces(MediaType.TEXT_PLAIN)
 	@Path("reinicio")
-	public String reinicio() throws Exception
+	public String reinicio()
 	{
 		System.out.println("La Carrera se ha reiniciado");
 		Contador.restart();
@@ -77,6 +75,7 @@ public class Carrera100 {
 			s_listos.release(numeroAtletas);
 			System.out.println("Listos");
 			tiempoInicioCarrera = System.currentTimeMillis();
+			System.out.println("Ya");
 		}
 		
 		return "";
@@ -86,8 +85,9 @@ public class Carrera100 {
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
 	@Path("llegada")
-	public String llegada(@QueryParam(value = "item")int dorsal) {
-		listaAtletasResultado.add("El atleta con dorsal: " + .dorsal + " ha tardado: " + ((System.currentTimeMillis() - tiempoInicioCarrera)/1000) + " segundos");
+	public String llegada(@QueryParam(value = "dorsal")int dorsal) {
+		
+		listaAtletasResultado.add("El atleta con dorsal: " + dorsal + " ha tardado: " + ((System.currentTimeMillis() - tiempoInicioCarrera)/1000) + " segundos");
 		return "";
 	}
 	

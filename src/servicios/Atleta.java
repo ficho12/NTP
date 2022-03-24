@@ -1,8 +1,6 @@
 package servicios;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -27,7 +25,7 @@ public class Atleta extends Thread {
 	
 	public void run() {
 	
-			target.path("Carrera100/preparados").request(MediaType.TEXT_PLAIN).get(String.class);
+			target.path("Carrera100/preparados").request(MediaType.TEXT_PLAIN).get(String.class); //Da error aquí
 			target.path("Carrera100/listos").request(MediaType.TEXT_PLAIN).get(String.class);
 			
 			//Duerme el tiempo aleatorio
@@ -37,12 +35,16 @@ public class Atleta extends Thread {
 				e.printStackTrace();
 			}
 			
-			target.path("Carrera100/llegada").queryParam("dorsal", dorsal).request(MediaType.TEXT_PLAIN).get(String.class);
+			target.path("Carrera100/llegada").queryParam("dorsal", this.dorsal).request(MediaType.TEXT_PLAIN).get(String.class);
 			target.path("Carrera100/resultados").request(MediaType.TEXT_PLAIN).get(String.class);
 	
 	}
 	
 	public long tarda() {
 		return  (long)(9.56 + Math.random()*2)*1000;
+	}
+	
+	public int getDorsal() {
+		return this.dorsal;
 	}
 }
