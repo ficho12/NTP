@@ -16,7 +16,7 @@ import javax.ws.rs.core.MediaType;
 public class Carrera100 {
 	public static Semaphore s_preparados = new Semaphore(0);
 	public static Semaphore s_listos = new Semaphore(0);
-	static int numeroAtletas = 4;		//Pasar por parámetro a reinicio
+	static int numeroAtletas = 0;		//Pasar por parámetro a reinicio
 	static List<String> listaAtletasResultado = null;
 	static List<Atleta> listaAtletas = null;
 	static long tiempoInicioCarrera;
@@ -24,16 +24,17 @@ public class Carrera100 {
 	@GET //tipo de petición HTTP
 	@Produces(MediaType.TEXT_PLAIN)
 	@Path("reinicio")
-	public String reinicio()
+	public String reinicio(@QueryParam(value = "numAtletas")int numAtletas)
 	{
-		System.out.println("La Carrera se ha reiniciado");
 		Contador.restart();
 		listaAtletasResultado = new ArrayList<String>();
-		
+		numeroAtletas = numAtletas;
 		
 		s_preparados.drainPermits();	//Pone todos los permits a 0, da igual el número
 		s_listos.drainPermits();
 		
+		System.out.println("La Carrera se ha reiniciado con "+numeroAtletas+" atletas.\nEsperando a los atletas");
+
 		return "";
 	}
 	

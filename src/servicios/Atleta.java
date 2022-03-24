@@ -43,8 +43,4 @@ public class Atleta extends Thread {
 	public long tarda() {
 		return  (long)(9.56 + Math.random()*2)*1000;
 	}
-	
-	public int getDorsal() {
-		return this.dorsal;
-	}
 }
