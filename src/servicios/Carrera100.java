@@ -21,7 +21,7 @@ public class Carrera100 {
 	static int numeroAtletas = 4;		//Pasar por parámetro a reinicio
 	static List<String> listaAtletasResultado = null;
 	static List<Atleta> listaAtletas = null;
-	static float tiempoInicioCarrera;
+	static long tiempoInicioCarrera;
 	
 	@GET //tipo de petición HTTP
 	@Produces(MediaType.TEXT_PLAIN)
@@ -35,8 +35,6 @@ public class Carrera100 {
 		
 		s_preparados.drainPermits();	//Pone todos los permits a 0, da igual el número
 		s_listos.drainPermits();
-			
-		
 		
 		return "";
 	}
@@ -72,8 +70,8 @@ public class Carrera100 {
 			try {
 				s_listos.acquire();
 			} catch (InterruptedException e) {
-				e.printStackTrace();		//Si el main no imprime mensajes como podemos debugear sin debugear? XD
-			}								// otra terminal (?)
+				e.printStackTrace();
+			}								
 		} else {
 			Contador.restart();
 			s_listos.release(numeroAtletas);
@@ -89,8 +87,7 @@ public class Carrera100 {
 	@Produces(MediaType.TEXT_PLAIN)
 	@Path("llegada")
 	public String llegada(@QueryParam(value = "item")int dorsal) {
-		
-		listaAtletasResultado.add("El atleta con dorsal: " + dorsal + " ha tardado: " + ((System.currentTimeMillis() - tiempoInicioCarrera)/1000) + " segundos");
+		listaAtletasResultado.add("El atleta con dorsal: " + .dorsal + " ha tardado: " + ((System.currentTimeMillis() - tiempoInicioCarrera)/1000) + " segundos");
 		return "";
 	}
 	

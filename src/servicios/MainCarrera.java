@@ -27,10 +27,5 @@ public class MainCarrera {
 			listaAtletas.add(new Atleta(i));
 			listaAtletas.get(i).start();
 		}
-		
-		
-		
-
 	}
-
 }

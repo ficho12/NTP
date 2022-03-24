@@ -17,7 +17,7 @@ public class Atleta extends Thread {
 	WebTarget target = client.target(uri);
 	
 	int dorsal;
-	float tiempo;
+	long tiempo;
 	
 	Atleta(int dorsal){
 		
@@ -32,7 +32,7 @@ public class Atleta extends Thread {
 			
 			//Duerme el tiempo aleatorio
 			try {
-				Thread.sleep((int)tiempo);
+				Thread.sleep(tiempo);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -42,7 +42,7 @@ public class Atleta extends Thread {
 	
 	}
 	
-	public float tarda() {
-		return (float) (9.56 + Math.random()*2)*1000;
+	public long tarda() {
+		return  (long)(9.56 + Math.random()*2)*1000;
 	}
 }
