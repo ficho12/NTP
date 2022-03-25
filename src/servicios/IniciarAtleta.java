@@ -69,7 +69,7 @@ public class IniciarAtleta {
 			}
 			
 			for(int i=0;i<numeroAtletas;i++) {
-				listaAtletas.add(new Atleta(i));
+				listaAtletas.add(new Atleta(i,args[0]));
 				listaAtletas.get(i).start();
 			}
 		}

@@ -11,14 +11,15 @@ import javax.ws.rs.core.UriBuilder;
 public class Atleta extends Thread {
 
 	Client client=ClientBuilder.newClient();
-	URI uri=UriBuilder.fromUri("http://localhost:8080/Carrera100m/").build();
-	WebTarget target = client.target(uri);
+	String Ip = null;
+	WebTarget target;
 	
 	int dorsal;
 	long tiempo;
 	
-	Atleta(int dorsal){
-		
+	Atleta(int dorsal,String Ip){
+		URI uri = UriBuilder.fromUri("http://" + Ip + ":8080/Carrera100m/").build();
+		target  = client.target(uri);
 		this.dorsal=dorsal;
 		this.tiempo = tarda();
 	}
