@@ -23,6 +23,8 @@ public class IniciarAtleta {
  */
 
 	public static void main(String[] args) {
+		
+		int numAtletas;
 
 		if(args.length<2 || args.length>4)
 		{
@@ -48,7 +50,7 @@ public class IniciarAtleta {
 				numeroAtletas = Integer.parseInt(args[1]);
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
-				System.out.println("\n\nError: Introduzca un número correcto de atletas, no: " + args[2] +"\n\n");
+				System.out.println("\n\nError 1: Introduzca un número correcto de atletas, no: " + args[1] +"\n\n");
 				return;
 			}
 						
@@ -56,20 +58,20 @@ public class IniciarAtleta {
 			{
 				if(args[2].equals("r"))
 				{
-					int numAtletas = Integer.parseInt(args[3]);
+					numAtletas = Integer.parseInt(args[3]);
 					try {
 						target.path("Carrera100/reinicio").queryParam("numAtletas", numAtletas).request(MediaType.TEXT_PLAIN).get(String.class);
 						//target.path("Carrera100/llegada").queryParam("dorsal", this.dorsal).request(MediaType.TEXT_PLAIN).get(String.class);
 					} catch (Exception e) {
 						e.printStackTrace();
-						System.out.println("\n\nError: Introduzca un número correcto de atletas máximos para el reinicio, no:" + args[3] +"\n\n");
+						System.out.println("\n\nError 2: Introduzca un número correcto de atletas máximos para el reinicio, no: " +numAtletas + " " + args[3] +"\n\n");
 						return;
 					}
 				}
 			}
 			
 			for(int i=0;i<numeroAtletas;i++) {
-				listaAtletas.add(new Atleta(i,args[0]));
+				listaAtletas.add(new Atleta(args[0]));
 				listaAtletas.get(i).start();
 			}
 		}

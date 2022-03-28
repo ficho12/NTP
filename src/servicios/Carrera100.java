@@ -88,7 +88,7 @@ public class Carrera100 {
 	@Path("llegada")
 	public String llegada(@QueryParam(value = "dorsal")int dorsal) {
 		
-		listaAtletasResultado.add("El atleta con dorsal: " + dorsal + " ha tardado: " + ((System.currentTimeMillis() - tiempoInicioCarrera)/1000) + " segundos");
+		listaAtletasResultado.add("El atleta con dorsal: " + dorsal + " ha tardado: " + ((System.currentTimeMillis() - tiempoInicioCarrera)/1000.00000) + " segundos");
 		return "";
 	}
 	

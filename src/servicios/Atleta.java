@@ -17,10 +17,10 @@ public class Atleta extends Thread {
 	int dorsal;
 	long tiempo;
 	
-	Atleta(int dorsal,String Ip){
+	Atleta(String Ip){
 		URI uri = UriBuilder.fromUri("http://" + Ip + ":8080/Carrera100m/").build();
 		target  = client.target(uri);
-		this.dorsal=dorsal;
+		this.dorsal=(int) (Math.random()*100);
 		this.tiempo = tarda();
 	}
 	
