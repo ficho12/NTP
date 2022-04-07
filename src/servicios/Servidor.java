@@ -14,10 +14,8 @@ public class Servidor {
 	@Produces(MediaType.TEXT_PLAIN)
 	@Path("reinicio")
 	public String pedirTiempo()
-	{
-		String tiempo;
-		
-		
+	{		
+		long t1 = System.nanoTime();
 		
 		/*
 		 	pedirTiempo()
@@ -33,6 +31,9 @@ public class Servidor {
 			e.printStackTrace();
 		}
 		
-		return tiempo;
+		long t2 = System.nanoTime();
+
+		
+		return Long.toString(t1) + "+" + Long.toString(t2);
 	}
 }

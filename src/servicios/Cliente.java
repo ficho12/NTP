@@ -16,6 +16,8 @@ public class Cliente {
 		
 		int numServidores = args.length;
 		ArrayList<Integer> IP = new ArrayList<Integer>();
+		long t0,t3;
+		String respuesta;
 		
 		if(args.length<2 || args.length>4)
 		{
@@ -47,6 +49,7 @@ public class Cliente {
 			
 			for(int j = 0; j<8; j++)				//8 repeticiones
 			{
+
 				/*
 				 * t0<-tiempo()
 					{t1,t2} <- máquina.pedirTiempo() //petición REST
@@ -55,9 +58,15 @@ public class Cliente {
 					d <- determinarDelay (t0,t1,t2,t3)
 					si ( d < mejorPar.d ) mejorPar <- {d,o}
 				 */
-				
-				target.path("Carrera100/pedirTiempo").request(MediaType.TEXT_PLAIN).get(String.class); 
+				t0 = System.nanoTime();
 
+				respuesta = target.path("Carrera100/pedirTiempo").request(MediaType.TEXT_PLAIN).get(String.class);
+				
+				t3 = System.nanoTime();
+
+				//if()	si ( d < mejorPar.d ) mejorPar <- {d,o}
+				
+			
 
 			}
 		}
