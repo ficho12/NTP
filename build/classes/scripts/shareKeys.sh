@@ -1,9 +1,10 @@
+#!/bin/bash
 #Este script permite evitar que se nos pida la contrase–a cada vez que hagamos un ssh
 
 if [ $# -eq 1 ]
 then
 	host=$1
-	
+
 	echo "Setting public and private keys on $host"
 	#crear el par de claves
 	if ! test -d ./ssh;
@@ -12,7 +13,8 @@ then
 	fi
 	cd ~/.ssh
 	ssh-keygen
-	
+
+
 	#copiar la clave pUblica al servidor remoto
 	echo "Copying key to remote server"
 	scp ~/.ssh/id_rsa.pub $host:pubkey.txt 
