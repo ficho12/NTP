@@ -16,8 +16,9 @@ public class Cliente {
 		
 		int numServidores = args.length;
 		ArrayList<Integer> IP = new ArrayList<Integer>();
-		long t0,t3;
+		long t0,t1,t2,t3;
 		String respuesta;
+		String separado[];
 		
 		if(args.length<2 || args.length>4)
 		{
@@ -63,6 +64,17 @@ public class Cliente {
 				respuesta = target.path("Carrera100/pedirTiempo").request(MediaType.TEXT_PLAIN).get(String.class);
 				
 				t3 = System.nanoTime();
+				
+				separado = respuesta.split("+");
+
+				try {
+					t1 = Long.parseLong(separado[0]);
+					t2 = Long.parseLong(separado[1]);
+				} catch (NumberFormatException e) {
+					e.printStackTrace();
+					System.out.println("\n\nError 2: No se pudo convertir el valor de pedirTiempo del servidor " + IP.get(i)
+							+ "\nEn la iteracióon " +j);
+				}  
 
 				//if()	si ( d < mejorPar.d ) mejorPar <- {d,o}
 				
