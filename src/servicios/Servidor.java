@@ -12,7 +12,7 @@ public class Servidor {
 	
 	@GET //tipo de petición HTTP
 	@Produces(MediaType.TEXT_PLAIN)
-	@Path("reinicio")
+	@Path("pedirTiempo")
 	public String pedirTiempo()
 	{		
 		long t1 = System.nanoTime();
