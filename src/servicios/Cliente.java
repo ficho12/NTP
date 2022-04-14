@@ -2,6 +2,7 @@ package servicios;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.ws.rs.client.Client;
@@ -11,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
 
 import clases.Par;
+import clases.Punto;
 
 public class Cliente {
 
@@ -114,14 +116,39 @@ public class Cliente {
 	static long determinarOffset(long t0, long t1, long t2, long t3) {
 		return (t1-t0 + t2-t3)/2;
 	}
+	
 	static long determinarDelay(long t0, long t1, long t2, long t3) {
 		return t1-t0 + t3-t2;
 	}
+	
 	static Par marzullo(ArrayList<Par> pares) {
+		Par marzullo = new Par();
 		int mejor = 0, contador = 0;
 		
+		ArrayList<Punto> puntos = new ArrayList<Punto>();
 		
-		return new Par(0,0);
+		for (Par par: pares) {
+			puntos.add(par.offset,true);
+			puntos.add(par.delay,false);
+		}
+		
+		Collections.sort(puntos);
+		
+		for(int i = 0; i < puntos.size(); i++) {
+			if(puntos.get(i).posicion)
+				contador++;
+			else
+				contador--;
+			
+			if(contador>mejor)
+			{
+				marzullo.offset = puntos.get(i).tiempo;
+				marzullo.delay = puntos.get(i+1).tiempo;
+				mejor = contador;
+			}
+		}
+		
+		return marzullo;
 	}
 	
 }
