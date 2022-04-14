@@ -3,7 +3,6 @@ package servicios;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -128,8 +127,8 @@ public class Cliente {
 		ArrayList<Punto> puntos = new ArrayList<Punto>();
 		
 		for (Par par: pares) {
-			puntos.add(par.offset,true);
-			puntos.add(par.delay,false);
+			puntos.add(new Punto(par.offset,true));
+			puntos.add(new Punto(par.delay,false));
 		}
 		
 		Collections.sort(puntos);
