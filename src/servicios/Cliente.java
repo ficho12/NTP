@@ -122,13 +122,14 @@ public class Cliente {
 	
 	static Par marzullo(ArrayList<Par> pares) {
 		Par marzullo = new Par();
+		Par marzulloTupla = new Par();//auxiliar por no crear un tipo nuevo
 		int mejor = 0, contador = 0;
 		
 		ArrayList<Punto> puntos = new ArrayList<Punto>();
 		
 		for (Par par: pares) {
-			puntos.add(new Punto(par.offset,true));
-			puntos.add(new Punto(par.delay,false));
+			puntos.add(new Punto(par.delay - par.offset,true));
+			puntos.add(new Punto(par.delay + par.offset,false));
 		}
 		
 		Collections.sort(puntos);
@@ -141,11 +142,15 @@ public class Cliente {
 			
 			if(contador>mejor)
 			{
-				marzullo.offset = puntos.get(i).tiempo;
-				marzullo.delay = puntos.get(i+1).tiempo;
+				marzulloTupla.offset = puntos.get(i).tiempo;
+				marzulloTupla.delay = puntos.get(i+1).tiempo;
 				mejor = contador;
 			}
 		}
+		//aqui tenemos una tupla en MARZULLOTUPLA tal que [5,7] y queremos conseguir un par, que en este caso seria 6 de delay, y 1 de offset.
+		long aux = (marzulloTupla.delay - marzulloTupla.offset)/(long)2;
+		
+		marzullo = new Par(marzulloTupla.delay-aux, aux);
 		
 		return marzullo;
 	}
